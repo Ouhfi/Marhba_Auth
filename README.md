@@ -218,7 +218,7 @@ Protected Screens
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/marhba-auth.git
+git clone https://github.com/Ouhfi/Marhba_Auth.git
 cd marhba-auth
 ```
 
