@@ -1,0 +1,70 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# =========================
+# Build
+# =========================
+dist/
+build/
+
+# =========================
+# Coverage
+# =========================
+coverage/
+
+# =========================
+# Cache
+# =========================
+.cache/
+.parcel-cache/
+.eslintcache
+
+# =========================
+# Expo / React Native
+# =========================
+.expo/
+.expo-shared/
+web-build/
+
+# Metro
+.metro-health-check*
+
+# Native folders (إذا كنت تستعمل Expo Managed Workflow)
+android/
+ios/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Operating System
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
