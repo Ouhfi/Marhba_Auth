@@ -1,28 +1,23 @@
 import app from "./app.js";
 import env from "./config/env.js";
 import sequelize from "./config/database.js";
-import { EagerLoadingError } from "sequelize";
-import { isColString } from "sequelize/lib/utils";
+import User from "./models/user.model.js"; 
 
-async function startServer(params) {
-    try {
-    sequelize.authenticate();
-
+async function startServer() {
+  try {
+    await sequelize.authenticate();
     console.log(" Database Connected");
 
     await sequelize.sync();
-    console.log("Models Synced");
+    console.log(" Models Synced");
 
-    app.listen(env.port , () => {
-        console.loge(`Server running on port ${env.port}`);
-    } );
-    
-}
-catch (error)
-{
-    console.error("server error ");
+    app.listen(env.port, () => {
+      console.log(` Server running on port ${env.port}`);
+    });
+  } catch (error) {
+    console.error(" Server Error");
     console.error(error);
-
+  }
 }
-}
 
+startServer();
