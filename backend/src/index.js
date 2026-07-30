@@ -2,6 +2,7 @@ import app from "./app.js";
 import env from "./config/env.js";
 import sequelize from "./config/database.js";
 import User from "./models/user.model.js"; 
+import e from "express";
 
 async function startServer() {
   try {
@@ -9,9 +10,9 @@ async function startServer() {
     console.log(" Database Connected");
 
     await sequelize.sync();
-    console.log(" Models Synced");
+    // console.log(" Models Synced");
 
-    app.listen(env.port, () => {
+    app.listen(env.port ,() => {
       console.log(` Server running on port ${env.port}`);
     });
   } catch (error) {

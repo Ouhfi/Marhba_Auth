@@ -2,16 +2,18 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import env from "../config/env.js";
-
 import jwt from "jsonwebtoken";
 
-
+//! ================================
+//! register route
+//! ================================
 
 export const register = async(req, res) => {
     try{
+        
           const { fullName, email, password } = req.body;
 
-    // console.log(fullName, email, password);
+    console.log(fullName, email, password);
     
     const existingUser = await User.findOne({
          where: {
@@ -54,21 +56,18 @@ export const register = async(req, res) => {
             message : "Internal Server Error"
         });
     }
-
-  
-    
-       
-    
-    
-
     // res.json({ 
     //     message: 'Register route' 
     // });
 };
 
+//! ================================
+//! login route
+//! ================================
 
 export const login = async (req, res) => {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
 
     const user = await User.findOne({
@@ -124,9 +123,14 @@ export const login = async (req, res) => {
   }
 };
 
+//! ================================
+//! me route 
+//! ================================
 
 export const me = (req , res) => {
     res.json({
-        message: 'Current User'
+        message: 'Current User',
+        user: req.user
     });
 }
+
