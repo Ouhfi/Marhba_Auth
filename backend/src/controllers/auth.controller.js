@@ -8,12 +8,12 @@ import jwt from "jsonwebtoken";
 //! register route
 //! ================================
 
-export const register = async(req, res) => {
+export const register = async(req, res , next) => {
     try{
         
           const { fullName, email, password } = req.body;
 
-    console.log(fullName, email, password);
+    // console.log(fullName, email, password);
     
     const existingUser = await User.findOne({
          where: {
@@ -21,14 +21,11 @@ export const register = async(req, res) => {
         }
     });
 
-    if(existingUser)
-    {
-        return res.status(400).json(
-            {
-            message : " User already exists"
-        }
-    );
-    }
+   if (existingUser) {
+  const error = new Error("User already exists");
+  error.status = 400;
+  return next(error);
+}
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await  User.create(
         {
@@ -50,11 +47,9 @@ export const register = async(req, res) => {
     );
 
     } catch (error) {
-        console.error(error);
+        next(error);
         
-        return res.status(500).json({
-            message : "Internal Server Error"
-        });
+       
     }
     // res.json({ 
     //     message: 'Register route' 
@@ -65,9 +60,8 @@ export const register = async(req, res) => {
 //! login route
 //! ================================
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
 
     const user = await User.findOne({
@@ -75,22 +69,29 @@ export const login = async (req, res) => {
         email,
       },
     });
+    // console.log(user);
 
     if (!user) {
-      return res.status(401).json({
-        message: "Email or password is incorrect",
-      });
+      const error = new Error("Email or password is incorrect");
+      error.status = 401;
+      return next(error);
     }
+
+    //?check if password is valid
+    // console.log(password);
+    // console.log(user.password);
 
     const isPasswordValid = await bcrypt.compare(
       password,
       user.password
     );
 
+    // // console.log(isPasswordValid);
+
     if (!isPasswordValid) {
-      return res.status(401).json({
-        message: "Email or password is incorrect",
-      });
+      const error = new Error("Email or password is incorrect");
+      error.status = 401;
+      return next(error);
     }
 
     const token = jwt.sign(
@@ -115,11 +116,7 @@ export const login = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Internal Server Error",
-    });
+    next(error);
   }
 };
 
@@ -127,10 +124,25 @@ export const login = async (req, res) => {
 //! me route 
 //! ================================
 
-export const me = (req , res) => {
-    res.json({
-        message: 'Current User',
-        user: req.user
+export const me = async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: {
+        exclude: ["password"],
+      },
     });
-}
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      return next(error);
+    }
+
+    return res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
