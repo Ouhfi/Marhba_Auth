@@ -1,4 +1,5 @@
 import express from "express";
+import "dotenv/config.js";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import logger from "./middlewares/logger.js";

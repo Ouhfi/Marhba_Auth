@@ -1,11 +1,14 @@
 import { Sequelize } from "sequelize";
+
 import env from "./env.js";
 
+
 const sequelize = new Sequelize(
-  env.db.database,
-  env.db.username,
-  env.db.password,
+
   {
+    password: env.db.password,
+
+    username: env.db.username,
     host: env.db.host,
     port: env.db.port,
     dialect: "postgres",
